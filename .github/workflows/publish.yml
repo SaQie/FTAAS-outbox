@@ -1,5 +1,4 @@
 name: publish
-
 on:
   push:
     tags: ["v*.*.*"]
@@ -21,6 +20,9 @@ jobs:
           server-id: github
           server-username: GITHUB_ACTOR
           server-password: GITHUB_TOKEN
+
+      - name: Set version from tag
+        run: mvn -B versions:set -DnewVersion=${GITHUB_REF_NAME#v}
 
       - name: Deploy with Maven
         run: mvn -B deploy -DskipTests
