@@ -6,6 +6,6 @@
       http://www.liquibase.org/xml/ns/dbchangelog
       https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd">
 
-    <include file="db/migration/V1__init.sql" relativeToChangelogFile="false"/>
+    <include file="/META-INF/ftaas-outbox/db/outbox_events.sql" relativeToChangelogFile="false"/>
 
 </databaseChangeLog>

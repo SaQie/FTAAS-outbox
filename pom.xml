@@ -92,7 +92,7 @@
                                     <properties>
                                         <property>
                                             <key>scripts</key>
-                                            <value>src/main/resources/db/migration</value>
+                                            <value>src/main/resources/META-INF/ftaas-outbox/db</value>
                                         </property>
                                         <property>
                                             <key>sort</key>
