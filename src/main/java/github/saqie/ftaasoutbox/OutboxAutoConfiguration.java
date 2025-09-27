@@ -25,7 +25,7 @@ public class OutboxAutoConfiguration {
     SpringLiquibase outboxLiquibase(DataSource dataSource) {
         SpringLiquibase lb = new SpringLiquibase();
         lb.setDataSource(dataSource);
-        lb.setChangeLog("classpath:db/changelog/db.changelog-master.xml");
+        lb.setChangeLog("classpath:/META-INF/ftaas-outbox/changelog/outbox.changelog-master.xml");
         lb.setShouldRun(true);
         lb.setLiquibaseTablespace(null);
         return lb;
