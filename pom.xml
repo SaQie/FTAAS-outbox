@@ -73,38 +73,49 @@
                         <artifactId>jooq-meta-extensions</artifactId>
                         <version>${jooq.version}</version>
                     </dependency>
-                    <dependency>
-                        <groupId>org.jooq</groupId>
-                        <artifactId>jooq-meta-extensions-liquibase</artifactId>
-                        <version>${jooq.version}</version>
-                    </dependency>
                 </dependencies>
 
                 <executions>
                     <execution>
                         <id>generate-jooq</id>
                         <phase>generate-sources</phase>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
+                        <goals><goal>generate</goal></goals>
                         <configuration>
                             <generator>
+                                <name>org.jooq.codegen.DefaultGenerator</name>
                                 <database>
-                                    <name>org.jooq.meta.extensions.liquibase.LiquibaseDatabase</name>
+                                    <name>org.jooq.meta.extensions.ddl.DDLDatabase</name>
                                     <properties>
-                                        <property key="scripts"
-                                                  value="${project.basedir}/src/main/resources/db/changelog/db.changelog-master.xml"/>
+                                        <property>
+                                            <key>scripts</key>
+                                            <value>src/main/resources/db/migration</value>
+                                        </property>
+                                        <property>
+                                            <key>sort</key>
+                                            <value>liquibase</value>
+                                        </property>
+                                        <property>
+                                            <key>dialect</key>
+                                            <value>POSTGRES</value>
+                                        </property>
+                                        <property>
+                                            <key>scriptsEncoding</key>
+                                            <value>UTF-8</value>
+                                        </property>
                                     </properties>
                                 </database>
+
+                                <generate>
+                                    <pojos>false</pojos>
+                                    <records>true</records>
+                                    <fluentSetters>true</fluentSetters>
+                                    <javaTimeTypes>true</javaTimeTypes>
+                                </generate>
+
                                 <target>
-                                    <packageName>github.saqie.ftaas.outbox.jooq</packageName>
+                                    <packageName>github.saqie.ftaas.jooq</packageName>
                                     <directory>${project.build.directory}/generated-sources/jooq</directory>
                                 </target>
-                                <generate>
-                                    <records>true</records>
-                                    <pojos>false</pojos>
-                                    <daos>false</daos>
-                                </generate>
                             </generator>
                         </configuration>
                     </execution>
