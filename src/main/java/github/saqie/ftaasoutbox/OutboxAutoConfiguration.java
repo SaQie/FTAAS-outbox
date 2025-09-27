@@ -1,5 +1,6 @@
 package github.saqie.ftaasoutbox;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import github.saqie.ftaasoutbox.api.OutboxWriter;
 import liquibase.integration.spring.SpringLiquibase;
 import org.jooq.DSLContext;
@@ -28,6 +29,13 @@ public class OutboxAutoConfiguration {
         lb.setShouldRun(true);
         lb.setLiquibaseTablespace(null);
         return lb;
+    }
+
+    @Bean
+    @ConditionalOnClass(ObjectMapper.class)
+    @ConditionalOnMissingBean(JsonSerializer.class)
+    JsonSerializer jsonSerializer(ObjectMapper objectMapper) {
+        return new JacksonJsonSerializer(objectMapper);
     }
 
     @Bean
