@@ -9,13 +9,14 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.jooq.JooqAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 
 import javax.sql.DataSource;
 
 
-@AutoConfiguration(after = JooqAutoConfiguration.class)
+@AutoConfiguration(after = {DataSourceAutoConfiguration.class, LiquibaseAutoConfiguration.class})
 public class OutboxAutoConfiguration {
 
     @Bean
