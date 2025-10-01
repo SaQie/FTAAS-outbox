@@ -1,7 +1,6 @@
 package github.saqie.ftaasoutbox;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,23 +10,25 @@ import org.springframework.transaction.annotation.Transactional;
 class OutboxReader {
 
     private final OutboxRepository outboxRepository;
-    private final int outboxBatchSize;
+    private final OutboxProperties outboxProperties;
+    private final OutboxPublisher outboxPublisher;
 
-    OutboxReader(final OutboxRepository outboxRepository, @Value("${outbox.batch.size}") final int outboxBatchSize) {
+    OutboxReader(final OutboxRepository outboxRepository, final OutboxProperties outboxProperties, final OutboxPublisher outboxPublisher) {
         this.outboxRepository = outboxRepository;
-        this.outboxBatchSize = outboxBatchSize;
+        this.outboxProperties = outboxProperties;
+        this.outboxPublisher = outboxPublisher;
     }
 
     @Scheduled(
-            fixedDelayString = "${outbox.poll-interval-ms}",
-            initialDelayString = "${outbox.initial-delay-ms}"
+            fixedDelayString = "${outbox.poll-interval}",
+            initialDelayString = "${outbox.initial-delay}"
     )
     @Transactional
     void process() {
-        final var unprocessedOutboxes = outboxRepository.findUnprocessedOutboxes(outboxBatchSize);
+        final var unprocessedOutboxes = outboxRepository.findUnprocessedOutboxes(outboxProperties.getBatchSize());
         unprocessedOutboxes.forEach(outbox -> {
-            log.info("Processing outbox {}", outbox);
-            // TODO -> kafka/rabbitMQ
+            log.info("Publishing event {}", outbox.eventId());
+            outboxPublisher.publish(outbox);
         });
         outboxRepository.markAsPublished(unprocessedOutboxes);
     }

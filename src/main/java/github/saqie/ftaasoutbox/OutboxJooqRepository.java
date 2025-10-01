@@ -37,6 +37,8 @@ class OutboxJooqRepository implements OutboxRepository {
                 .where(OUTBOX_EVENTS.TYPE.eq(Status.Outbox.NEW.name()))
                 .orderBy(OUTBOX_EVENTS.CREATED_AT.asc())
                 .limit(limit)
+                .forUpdate()
+                .skipLocked()
                 .fetch(OutboxMapper::toDomain);
     }
 

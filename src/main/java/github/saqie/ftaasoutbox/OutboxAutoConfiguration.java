@@ -12,13 +12,17 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jooq.JooqAutoConfiguration;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import javax.sql.DataSource;
 
 
 @AutoConfiguration(after = {DataSourceAutoConfiguration.class, LiquibaseAutoConfiguration.class, JooqAutoConfiguration.class})
-public class OutboxAutoConfiguration {
+@EnableConfigurationProperties(OutboxProperties.class)
+@EnableScheduling
+class OutboxAutoConfiguration {
 
     @Bean
     @ConditionalOnClass(SpringLiquibase.class)
@@ -34,7 +38,6 @@ public class OutboxAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnClass(ObjectMapper.class)
     @ConditionalOnMissingBean(JsonSerializer.class)
     JsonSerializer jsonSerializer(ObjectMapper objectMapper) {
         return new JacksonJsonSerializer(objectMapper);
