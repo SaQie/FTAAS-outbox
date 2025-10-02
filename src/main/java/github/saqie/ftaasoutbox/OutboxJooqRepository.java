@@ -3,13 +3,10 @@ package github.saqie.ftaasoutbox;
 import lombok.AllArgsConstructor;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.OffsetDateTime;
 import java.util.List;
 
-import static github.saqie.ftaas.jooq.tables.OutboxEvents.OUTBOX_EVENTS;
+import static github.saqie.ftaas.outbox.jooq.tables.OutboxEvents.OUTBOX_EVENTS;
 
 @AllArgsConstructor
 @Repository

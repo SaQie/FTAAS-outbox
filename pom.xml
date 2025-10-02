@@ -141,7 +141,7 @@
                                 </generate>
 
                                 <target>
-                                    <packageName>github.saqie.ftaas.jooq</packageName>
+                                    <packageName>github.saqie.ftaas.outbox.jooq</packageName>
                                     <directory>${project.build.directory}/generated-sources/jooq</directory>
                                 </target>
                             </generator>

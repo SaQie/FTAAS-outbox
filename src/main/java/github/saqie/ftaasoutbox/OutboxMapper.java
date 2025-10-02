@@ -1,6 +1,6 @@
 package github.saqie.ftaasoutbox;
 
-import github.saqie.ftaas.jooq.tables.records.OutboxEventsRecord;
+import github.saqie.ftaas.outbox.jooq.tables.records.OutboxEventsRecord;
 import github.saqie.ftaasoutbox.api.Type;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
