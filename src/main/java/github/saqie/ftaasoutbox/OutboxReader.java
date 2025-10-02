@@ -2,10 +2,9 @@ package github.saqie.ftaasoutbox;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 @Slf4j
 class OutboxReader {
 
@@ -23,7 +22,6 @@ class OutboxReader {
             fixedDelayString = "${outbox.poll-interval}",
             initialDelayString = "${outbox.initial-delay}"
     )
-    @Transactional
     void process() {
         final var unprocessedOutboxes = outboxRepository.findUnprocessedOutboxes(outboxProperties.getBatchSize());
         unprocessedOutboxes.forEach(outbox -> {
