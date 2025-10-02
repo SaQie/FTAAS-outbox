@@ -1,1 +1,2 @@
 github.saqie.ftaasoutbox.OutboxAutoConfiguration
+github.saqie.ftaasoutbox.OutboxKafkaAutoConfiguration
