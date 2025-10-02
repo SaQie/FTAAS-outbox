@@ -22,6 +22,7 @@ final class OutboxMapper {
         record.setEventId(outbox.eventId().id());
         record.setPayloadJson(outbox.payload().json());
         record.setStatus(outbox.status().rawStatus());
+        record.setOccurredAt(outbox.occurredAt().atOffset(OffsetDateTime.now().getOffset()));
         return record;
     }
 }

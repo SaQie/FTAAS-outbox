@@ -18,15 +18,9 @@ class OutboxJooqRepository implements OutboxRepository {
     private final DSLContext dslContext;
 
     @Override
-    @Transactional(propagation = Propagation.MANDATORY)
     public void save(Outbox outbox) {
         dslContext.insertInto(OUTBOX_EVENTS)
-                .set(OUTBOX_EVENTS.EVENT_ID, outbox.eventId().id())
-                .set(OUTBOX_EVENTS.ATTEMPTS, outbox.attempts().attempt())
-                .set(OUTBOX_EVENTS.TYPE, outbox.type().value())
-                .set(OUTBOX_EVENTS.CREATED_AT, OffsetDateTime.now())
-                .set(OUTBOX_EVENTS.PAYLOAD_JSON, outbox.payload().json())
-                .set(OUTBOX_EVENTS.STATUS, outbox.status().rawStatus())
+                .set(OutboxMapper.fromDomain(outbox))
                 .execute();
     }
 
