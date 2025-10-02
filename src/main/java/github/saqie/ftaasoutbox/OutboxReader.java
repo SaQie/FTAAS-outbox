@@ -19,10 +19,10 @@ class OutboxReader {
     }
 
     @Scheduled(
-            fixedDelayString = "${outbox.poll-interval}",
-            initialDelayString = "${outbox.initial-delay}"
+            fixedDelayString = "#{@outboxProperties.poolIntervalMs.toMillis()}",
+            initialDelayString = "#{@outboxProperties.initialDelayMs.toMillis()}"
     )
-    void process() {
+    public void process() {
         final var unprocessedOutboxes = outboxRepository.findUnprocessedOutboxes(outboxProperties.getBatchSize());
         unprocessedOutboxes.forEach(outbox -> {
             log.info("Publishing event {}", outbox.eventId());

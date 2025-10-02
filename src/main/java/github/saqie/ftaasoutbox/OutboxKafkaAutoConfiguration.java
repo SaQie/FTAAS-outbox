@@ -42,9 +42,5 @@ class OutboxKafkaAutoConfiguration {
         return new OutboxKafkaPublisher(template, props.getKafka().getTopic());
     }
 
-    @Bean
-    OutboxReader outboxReader(OutboxRepository outboxRepository, OutboxProperties props, OutboxPublisher publisher) {
-        return new OutboxReader(outboxRepository, props, publisher);
-    }
 
 }
