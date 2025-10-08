@@ -16,8 +16,8 @@ class OutboxReader {
 
 
     @Scheduled(
-            fixedDelayString = "#{@outbox-github.saqie.ftaasoutbox.OutboxProperties.poolIntervalMs.toMillis()}",
-            initialDelayString = "#{@outbox-github.saqie.ftaasoutbox.OutboxProperties.initialDelayMs.toMillis()}"
+            fixedDelayString = "${outbox.pool-interval-ms:10000}",
+            initialDelayString = "${outbox.initial-delay-ms:0}"
     )
     public void process() {
         final var unprocessedOutboxes = outboxRepository.findUnprocessedOutboxes(outboxProperties.getBatchSize());
