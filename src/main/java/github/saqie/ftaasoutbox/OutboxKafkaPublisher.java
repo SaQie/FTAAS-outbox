@@ -1,7 +1,9 @@
 package github.saqie.ftaasoutbox;
 
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Component;
 
+@Component
 record OutboxKafkaPublisher(
         KafkaTemplate<String, Outbox> kafkaTemplate,
         String topic
