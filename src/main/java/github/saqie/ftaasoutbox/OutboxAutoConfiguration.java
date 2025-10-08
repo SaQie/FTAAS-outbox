@@ -22,6 +22,7 @@ import javax.sql.DataSource;
 
 @AutoConfiguration(after = {DataSourceAutoConfiguration.class, LiquibaseAutoConfiguration.class, JooqAutoConfiguration.class})
 @EnableScheduling
+@EnableConfigurationProperties(OutboxProperties.class)
 class OutboxAutoConfiguration {
 
     @Bean
@@ -56,13 +57,6 @@ class OutboxAutoConfiguration {
     @ConditionalOnMissingBean(OutboxRepository.class)
     OutboxRepository outboxRepositoryJooq(DSLContext dsl) {
         return new OutboxJooqRepository(dsl);
-    }
-
-
-    @Bean
-    @ConfigurationProperties("outbox")
-    OutboxProperties outboxProperties() {
-        return new OutboxProperties();
     }
 
     @Bean

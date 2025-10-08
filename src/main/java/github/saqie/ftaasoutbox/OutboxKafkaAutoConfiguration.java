@@ -5,9 +5,7 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
@@ -15,7 +13,6 @@ import org.springframework.kafka.core.ProducerFactory;
 import java.util.HashMap;
 
 @AutoConfiguration
-@EnableConfigurationProperties(OutboxProperties.class)
 @ConditionalOnClass(org.springframework.kafka.core.KafkaTemplate.class)
 @ConditionalOnProperty(prefix = "outbox.kafka", name = "enabled", havingValue = "true", matchIfMissing = true)
 class OutboxKafkaAutoConfiguration {
