@@ -59,6 +59,11 @@ class OutboxAutoConfiguration {
     }
 
     @Bean
+    OutboxProperties outboxProperties() {
+        return new OutboxProperties();
+    }
+
+    @Bean
     @ConditionalOnMissingBean(OutboxReader.class)
     OutboxReader outboxReader(OutboxRepository outboxRepository, OutboxProperties props, OutboxPublisher publisher) {
         return new OutboxReader(outboxRepository, props, publisher);
