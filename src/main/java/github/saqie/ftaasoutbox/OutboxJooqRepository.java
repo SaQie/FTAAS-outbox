@@ -25,7 +25,7 @@ class OutboxJooqRepository implements OutboxRepository {
     @Override
     public List<Outbox> findUnprocessedOutboxes(final int limit) {
         return dslContext.selectFrom(OUTBOX_EVENTS)
-                .where(OUTBOX_EVENTS.TYPE.eq(Status.Outbox.NEW.name()))
+                .where(OUTBOX_EVENTS.STATUS.eq(Status.Outbox.NEW.name()))
                 .orderBy(OUTBOX_EVENTS.CREATED_AT.asc())
                 .limit(limit)
                 .forUpdate()

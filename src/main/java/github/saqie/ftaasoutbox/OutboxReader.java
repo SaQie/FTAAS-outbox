@@ -19,8 +19,10 @@ class OutboxReader {
             initialDelayString = "${outbox.initial-delay-ms:0}"
     )
     public void process() {
-        log.info("In process");
+        log.info("Start reading outbox");
+        log.info("Batch size: {}", outboxProperties.getBatchSize());
         final var unprocessedOutboxes = outboxRepository.findUnprocessedOutboxes(outboxProperties.getBatchSize());
+        log.info("Unprocessed outboxes: {}", unprocessedOutboxes);
         unprocessedOutboxes.forEach(outbox -> {
             log.info("Publishing event {}", outbox.eventId());
             outboxPublisher.publish(outbox);
