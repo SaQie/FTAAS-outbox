@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.kafka.support.serializer.JsonSerializer;
 
 import java.util.HashMap;
 
@@ -28,7 +29,7 @@ class OutboxKafkaAutoConfiguration {
         cfg.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, props.getKafka().getBootstrapServers());
         cfg.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         cfg.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
-        cfg.put(org.springframework.kafka.support.serializer.JsonSerializer.ADD_TYPE_INFO_HEADERS, false);
+        cfg.put(JsonSerializer.ADD_TYPE_INFO_HEADERS, false);
         cfg.put(ProducerConfig.CLIENT_ID_CONFIG, props.getKafka().getClientId());
         props.getKafka().getProps().forEach((kk, vv) -> {
             if (kk != null && vv != null) cfg.put(kk, vv);
