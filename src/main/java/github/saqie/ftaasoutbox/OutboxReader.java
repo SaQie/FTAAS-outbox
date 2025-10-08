@@ -16,8 +16,8 @@ class OutboxReader {
 
 
     @Scheduled(
-            fixedDelayString = "#{@outbox.poolIntervalMs.toMillis()}",
-            initialDelayString = "#{@outbox.initialDelayMs.toMillis()}"
+            fixedDelayString = "#{@outboxProperties.poolIntervalMs.toMillis()}",
+            initialDelayString = "#{@outboxProperties.initialDelayMs.toMillis()}"
     )
     public void process() {
         final var unprocessedOutboxes = outboxRepository.findUnprocessedOutboxes(outboxProperties.getBatchSize());
