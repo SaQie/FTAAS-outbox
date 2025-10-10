@@ -23,9 +23,9 @@ jobs:
 
       - name: Set version from tag
         run: mvn -B versions:set -DnewVersion=${GITHUB_REF_NAME#v}
-#
-#      - name: Run tests
-#        run: mvn -B test
+
+      - name: Run tests
+        run: mvn -B test
 
       - name: Deploy with Maven
         run: mvn -B deploy -DskipTests
