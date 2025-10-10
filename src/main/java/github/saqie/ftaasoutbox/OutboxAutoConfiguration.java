@@ -22,7 +22,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import javax.sql.DataSource;
 
 
-@AutoConfiguration(after = {DataSourceAutoConfiguration.class, LiquibaseAutoConfiguration.class, JooqAutoConfiguration.class})
+@AutoConfiguration(after = {DataSourceAutoConfiguration.class, LiquibaseAutoConfiguration.class, JooqAutoConfiguration.class, OutboxKafkaAutoConfiguration.class})
 @EnableScheduling
 @EnableConfigurationProperties(OutboxProperties.class)
 class OutboxAutoConfiguration {
@@ -41,6 +41,7 @@ class OutboxAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean(Settings.class)
     Settings settings() {
         return new Settings()
                 .withRenderQuotedNames(RenderQuotedNames.NEVER);
@@ -61,7 +62,6 @@ class OutboxAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnClass(DSLContext.class)
     @ConditionalOnBean(DSLContext.class)
     @ConditionalOnMissingBean(OutboxRepository.class)
     OutboxRepository outboxRepositoryJooq(DSLContext dsl) {
