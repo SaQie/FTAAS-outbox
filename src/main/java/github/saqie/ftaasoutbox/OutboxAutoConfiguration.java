@@ -39,16 +39,17 @@ class OutboxAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean(JsonSerializer.class)
-    JsonSerializer jsonSerializer(ObjectMapper objectMapper) {
-        return new JacksonJsonSerializer(objectMapper);
+    @ConditionalOnClass(ObjectMapper.class)
+    @ConditionalOnMissingBean(ObjectMapper.class)
+    ObjectMapper objectMapper() {
+        return new ObjectMapper();
     }
 
     @Bean
-    @ConditionalOnBean(JsonSerializer.class)
-    @ConditionalOnMissingBean(OutboxWriter.class)
-    OutboxWriter outboxWriter(final JsonSerializer jsonSerializer, final OutboxRepository outboxRepository) {
-        return new OutboxWriterService(jsonSerializer, outboxRepository);
+    @ConditionalOnClass(ObjectMapper.class)
+    @ConditionalOnMissingBean(JsonSerializer.class)
+    JsonSerializer jsonSerializer(ObjectMapper objectMapper) {
+        return new JacksonJsonSerializer(objectMapper);
     }
 
     @Bean
@@ -60,6 +61,14 @@ class OutboxAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnBean({ JsonSerializer.class, OutboxRepository.class })
+    @ConditionalOnMissingBean(OutboxWriter.class)
+    OutboxWriter outboxWriter(final JsonSerializer jsonSerializer, final OutboxRepository outboxRepository) {
+        return new OutboxWriterService(jsonSerializer, outboxRepository);
+    }
+
+    @Bean
+    @ConditionalOnBean({ OutboxRepository.class, OutboxPublisher.class })
     @ConditionalOnMissingBean(OutboxReader.class)
     OutboxReader outboxReader(OutboxRepository outboxRepository, OutboxProperties props, OutboxPublisher publisher) {
         return new OutboxReader(outboxRepository, props, publisher);

@@ -9,7 +9,6 @@ import java.util.List;
 import static github.saqie.ftaas.outbox.jooq.tables.OutboxEvents.OUTBOX_EVENTS;
 
 @AllArgsConstructor
-@Repository
 class OutboxJooqRepository implements OutboxRepository {
 
     private final DSLContext dslContext;
