@@ -20,7 +20,6 @@ class OutboxReader {
     )
     public void process() {
         log.info("Start reading outbox");
-        log.info("Batch size: {}", outboxProperties.getBatchSize());
         final var unprocessedOutboxes = outboxRepository.findUnprocessedOutboxes(outboxProperties.getBatchSize());
         log.info("Unprocessed outboxes: {}", unprocessedOutboxes);
         unprocessedOutboxes.forEach(outbox -> {

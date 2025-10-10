@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import github.saqie.ftaasoutbox.api.OutboxWriter;
 import liquibase.integration.spring.SpringLiquibase;
 import org.jooq.DSLContext;
+import org.jooq.conf.RenderQuotedNames;
+import org.jooq.conf.Settings;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -39,6 +41,12 @@ class OutboxAutoConfiguration {
     }
 
     @Bean
+    Settings settings() {
+        return new Settings()
+                .withRenderQuotedNames(RenderQuotedNames.NEVER);
+    }
+
+    @Bean
     @ConditionalOnClass(ObjectMapper.class)
     @ConditionalOnMissingBean(ObjectMapper.class)
     ObjectMapper objectMapper() {
@@ -61,14 +69,14 @@ class OutboxAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnBean({ JsonSerializer.class, OutboxRepository.class })
+    @ConditionalOnBean({JsonSerializer.class, OutboxRepository.class})
     @ConditionalOnMissingBean(OutboxWriter.class)
     OutboxWriter outboxWriter(final JsonSerializer jsonSerializer, final OutboxRepository outboxRepository) {
         return new OutboxWriterService(jsonSerializer, outboxRepository);
     }
 
     @Bean
-    @ConditionalOnBean({ OutboxRepository.class, OutboxPublisher.class })
+    @ConditionalOnBean({OutboxRepository.class, OutboxPublisher.class})
     @ConditionalOnMissingBean(OutboxReader.class)
     OutboxReader outboxReader(OutboxRepository outboxRepository, OutboxProperties props, OutboxPublisher publisher) {
         return new OutboxReader(outboxRepository, props, publisher);
